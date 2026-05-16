@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.env.*
+*.log
+coverage
+build_error.txt
+build_err.log
+error.txt

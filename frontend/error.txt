@@ -1,0 +1,110 @@
+﻿
+> frontend@0.0.0 build
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 119 modules transformed.
+node.exe : [31mx[39m 
+Build failed in 1.31s
+At C:\Program 
+Files\nodejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (  
+  [31mx[39m Build fail   
+ ed in 1.31s:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+[31merror during build:
+[31msrc/components/Navbar
+.jsx (2:7): "default" is 
+not exported by 
+"src/hooks/useAuth.js", 
+imported by "src/component
+s/Navbar.jsx".[31m
+file: 
+[36mC:/work-space/broto t
+ype/ecommerce/frontend/src
+/components/Navbar.jsx:2:7
+[31m
+[33m
+1: import { Link, 
+useNavigate } from 
+'react-router-dom';
+2: import useAuth from 
+'../hooks/useAuth';
+          ^
+3: import './Navbar.css';
+[31m
+    at getRollupError (fil
+e:///C:/work-space/broto%2
+0type/ecommerce/frontend/n
+ode_modules/rollup/dist/es
+/shared/parseAst.js:406:41
+)
+    at error (file:///C:/w
+ork-space/broto%20type/eco
+mmerce/frontend/node_modul
+es/rollup/dist/es/shared/p
+arseAst.js:402:42)
+    at Module.error (file:
+///C:/work-space/broto%20t
+ype/ecommerce/frontend/nod
+e_modules/rollup/dist/es/s
+hared/node-entry.js:17065:
+16)
+    at 
+Module.traceVariable (file
+:///C:/work-space/broto%20
+type/ecommerce/frontend/no
+de_modules/rollup/dist/es/
+shared/node-entry.js:17477
+:29)
+    at 
+ModuleScope.findVariable (
+file:///C:/work-space/brot
+o%20type/ecommerce/fronten
+d/node_modules/rollup/dist
+/es/shared/node-entry.js:1
+5090:39)
+    at ReturnValueScope.fi
+ndVariable (file:///C:/wor
+k-space/broto%20type/ecomm
+erce/frontend/node_modules
+/rollup/dist/es/shared/nod
+e-entry.js:5676:38)
+    at FunctionBodyScope.f
+indVariable (file:///C:/wo
+rk-space/broto%20type/ecom
+merce/frontend/node_module
+s/rollup/dist/es/shared/no
+de-entry.js:5676:38)
+    at Identifier.bind (fi
+le:///C:/work-space/broto%
+20type/ecommerce/frontend/
+node_modules/rollup/dist/e
+s/shared/node-entry.js:545
+0:40)
+    at 
+CallExpression.bind (file:
+///C:/work-space/broto%20t
+ype/ecommerce/frontend/nod
+e_modules/rollup/dist/es/s
+hared/node-entry.js:2832:2
+3)
+    at 
+CallExpression.bind (file:
+///C:/work-space/broto%20t
+ype/ecommerce/frontend/nod
+e_modules/rollup/dist/es/s
+hared/node-entry.js:12199:
+15)[39m
+

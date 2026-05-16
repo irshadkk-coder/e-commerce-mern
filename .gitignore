@@ -1,0 +1,9 @@
+node_modules/
+.env
+backend/public/product-images/*
+!backend/public/product-images/.gitkeep
+*.log
+.DS_Store
+dist/
+structure.txt
+.env.example
