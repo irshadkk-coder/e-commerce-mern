@@ -7,8 +7,8 @@ class HttpError extends Error {
 }
 
 const badRequest = (message, details) => new HttpError(400, message, details);
-const unauthorized = (message = 'Unauthorized') => new HttpError(401, message);
-const forbidden = (message = 'Forbidden') => new HttpError(403, message);
+const unauthorized = (message = 'Unauthorized', details) => new HttpError(401, message, details);
+const forbidden = (message = 'Forbidden', details) => new HttpError(403, message, details);
 const notFound = (message = 'Not found') => new HttpError(404, message);
 const conflict = (message, details) => new HttpError(409, message, details);
 

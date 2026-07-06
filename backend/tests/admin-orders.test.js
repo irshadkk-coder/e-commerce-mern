@@ -21,7 +21,7 @@ describe('admin order API', () => {
     const list = await request(app)
       .get('/api/admin/orders')
       .set('Authorization', `Bearer ${adminToken}`)
-      .query({ status: 'pending', page: 1, limit: 10 })
+      .query({ status: 'order_placed', page: 1, limit: 10 })
       .expect(200);
 
     expect(list.body.orders).toHaveLength(1);

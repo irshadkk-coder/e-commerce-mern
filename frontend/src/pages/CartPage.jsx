@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { getCart, updateCartQuantity } from '../services/cartService';
 import { useAuth } from '../hooks/useAuth';
-import { productImageUrl } from '../services/assetUrl';
+import { getProductImage } from '../services/assetUrl';
+import { formatCategory } from '../constants/categories';
 import './CartPage.css';
 
 const CartPage = () => {
@@ -79,7 +80,7 @@ const CartPage = () => {
           {cartItems.map((item) => (
             <div key={item.item} className="cart-item glass-panel">
               <img 
-                src={productImageUrl(item.product._id)}
+                src={getProductImage(item.product)}
                 alt={item.product.name} 
                 className="cart-item-image"
                 loading="lazy"
@@ -90,7 +91,7 @@ const CartPage = () => {
                 <Link to={`/products/${item.product._id}`} className="cart-item-title">
                   {item.product.name}
                 </Link>
-                <div className="cart-item-category">{item.product.category}</div>
+                <div className="cart-item-category">{formatCategory(item.product.category)}</div>
                 <div className="cart-item-price">₹{item.product.price}</div>
               </div>
 

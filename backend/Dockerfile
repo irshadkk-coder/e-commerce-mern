@@ -15,6 +15,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY package*.json ./
 COPY app.js ./
 COPY config ./config
+COPY constants ./constants
 COPY controllers ./controllers
 COPY middleware ./middleware
 COPY routes ./routes

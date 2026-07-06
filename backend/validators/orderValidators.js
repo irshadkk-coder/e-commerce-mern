@@ -9,11 +9,11 @@ const checkoutBody = z.object({
 });
 
 const orderStatusBody = z.object({
-  status: z.enum(['pending', 'paid', 'shipped', 'delivered', 'cancelled'])
+  status: z.enum(['order_placed', 'confirmed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled'])
 });
 
 const adminOrderQuery = paginationQuery.extend({
-  status: z.enum(['all', 'pending', 'paid', 'shipped', 'delivered', 'cancelled']).optional().default('all'),
+  status: z.enum(['all', 'order_placed', 'confirmed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled']).optional().default('all'),
   search: z.string().trim().max(120).optional().default('')
 });
 

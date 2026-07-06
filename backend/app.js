@@ -9,6 +9,7 @@ const { validateEnv } = require('./config/env');
 const { corsOptions,helmetMiddleware,generalLimiter, uploadOptions} = require('./config/security');
 const db = require('./config/connection');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
+const loggerUtil = require('./utils/logger');
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
@@ -40,11 +41,11 @@ const startServer = () => {
 
   db.connect((err) => {
     if (err) {
-      console.error('Database connection error:', err);
+      loggerUtil.error('Database connection error:', err);
       process.exit(1);
     }
     app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}`);
+      loggerUtil.info(`Server running at http://localhost:${PORT}`);
     });
   });
 };

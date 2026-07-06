@@ -3,7 +3,7 @@ const collections = require('../config/collections');
 const { ObjectId } = require('mongodb');
 const { notFound } = require('../utils/httpError');
 
-const ORDER_STATUSES = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
+const ORDER_STATUSES = ['order_placed', 'confirmed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled'];
 
 const buildOrderFilter = ({ status, search } = {}) => {
   const filter = {};
@@ -98,9 +98,33 @@ const updateOrderStatus = async (orderId, status) => {
   return order;
 };
 
+const getOrderStats = async () => {
+  const collection = db.get().collection(collections.ORDER_COLLECTION);
+  const [totalOrders, pendingOrders, revenue] = await Promise.all([
+    collection.countDocuments({}),
+    collection.countDocuments({ status: { $in: ['order_placed', 'pending'] } }),
+    collection.aggregate([
+      { $match: { paymentStatus: 'paid' } },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: { $toDouble: '$totalAmount' } }
+        }
+      }
+    ]).toArray()
+  ]);
+
+  return {
+    totalOrders,
+    pendingOrders,
+    totalRevenue: revenue[0]?.totalRevenue || 0
+  };
+};
+
 module.exports = {
   listOrders,
   getOrderById,
   updateOrderStatus,
+  getOrderStats,
   ORDER_STATUSES
 };

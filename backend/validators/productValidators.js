@@ -5,6 +5,7 @@ const productBody = z.object({
   name: text('Product name', 2, 120),
   category: text('Category', 2, 80),
   price: z.coerce.number().positive('Price must be greater than 0').max(10000000),
+  stock: z.coerce.number().int().min(0).max(1000000),
   description: text('Description', 5, 2000)
 });
 

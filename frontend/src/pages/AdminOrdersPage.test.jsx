@@ -5,6 +5,17 @@ import AdminOrdersPage from './AdminOrdersPage';
 import { updateAdminOrderStatus } from '../services/adminService';
 
 vi.mock('../services/adminService', () => ({
+  getAdminOrder: vi.fn(() => Promise.resolve({
+    status: true,
+    order: {
+      _id: '507f1f77bcf86cd799439011',
+      products: [{
+        item: '507f1f77bcf86cd799439012',
+        quantity: 2,
+        product: { name: 'Gaming Keyboard', category: 'Accessories', price: 1999 }
+      }]
+    }
+  })),
   getAdminOrders: vi.fn(() => Promise.resolve({
     status: true,
     orders: [{

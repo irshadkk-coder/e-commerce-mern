@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = '1d';
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'refresh_secret';
+const JWT_EXPIRES_IN = '15m'; // Short-lived access token
+const REFRESH_TOKEN_EXPIRES_IN = '7d';
 
 const createToken = (user) =>
   jwt.sign(
@@ -15,9 +18,19 @@ const createToken = (user) =>
     { expiresIn: JWT_EXPIRES_IN }
   );
 
+const createRefreshToken = (user) => 
+  jwt.sign(
+    { userId: user._id.toString() },
+    REFRESH_TOKEN_SECRET,
+    { expiresIn: REFRESH_TOKEN_EXPIRES_IN }
+  );
+
 const verifyToken = (token) => jwt.verify(token, JWT_SECRET);
+const verifyRefreshToken = (token) => jwt.verify(token, REFRESH_TOKEN_SECRET);
 
 module.exports = {
   createToken,
-  verifyToken
+  createRefreshToken,
+  verifyToken,
+  verifyRefreshToken
 };

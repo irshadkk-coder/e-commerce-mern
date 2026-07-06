@@ -10,7 +10,7 @@ export const placeOrder = async (orderData) => {
   return response.data;
 };
 
-export const verifyPayment = async (paymentDetails, order) => {
+export const verifyPayment = async (paymentDetails, order, checkout) => {
   const response = await api.post('/verify-payment', {
     payment: paymentDetails,
     order: {
@@ -18,7 +18,8 @@ export const verifyPayment = async (paymentDetails, order) => {
       receipt: order.receipt,
       amount: order.amount,
       currency: order.currency
-    }
+    },
+    checkout
   });
   return response.data;
 };
@@ -30,5 +31,10 @@ export const getOrders = async () => {
 
 export const getOrderProducts = async (orderId) => {
   const response = await api.get(`/orders/${orderId}/products`);
+  return response.data;
+};
+
+export const cancelOrder = async (orderId) => {
+  const response = await api.patch(`/orders/${orderId}/cancel`);
   return response.data;
 };

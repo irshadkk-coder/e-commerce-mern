@@ -22,3 +22,29 @@ export const logout = async () => {
     // ignore
   }
 };
+
+export const verifyEmail = async (email, otp) => {
+  const { data } = await api.post('/verify-email', { email, otp });
+  return data;
+};
+
+export const resendVerificationEmail = async (email) => {
+  const { data } = await api.post('/resend-verification', { email });
+  return data;
+};
+
+export const forgotPassword = async (email) => {
+  const { data } = await api.post('/forgot-password', { email });
+  return data;
+};
+
+export const resetPassword = async (token, newPassword) => {
+  const { data } = await api.post('/reset-password', { token, newPassword });
+  return data;
+};
+
+
+export const logoutAll = async () => {
+  const { data } = await api.post('/logout-all');
+  return data;
+};

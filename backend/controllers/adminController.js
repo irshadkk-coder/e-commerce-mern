@@ -66,6 +66,20 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
   return success(res, { message: 'Order status updated', order });
 });
 
+const getStats = asyncHandler(async (req, res) => {
+  const [products, orderStats] = await Promise.all([
+    productService.getAllProducts(),
+    orderService.getOrderStats()
+  ]);
+
+  return success(res, {
+    stats: {
+      totalProducts: products.length,
+      ...orderStats
+    }
+  });
+});
+
 module.exports = {
   listProducts,
   addProduct,
@@ -74,5 +88,6 @@ module.exports = {
   updateProduct,
   listOrders,
   getOrder,
-  updateOrderStatus
+  updateOrderStatus,
+  getStats
 };

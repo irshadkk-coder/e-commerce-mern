@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
 const { ensureIndexes } = require('./indexes');
+const logger = require('../utils/logger');
 
 const state = { db: null, client: null };
 
@@ -14,10 +15,13 @@ module.exports.connect = function (done) {
       state.client = client;
       state.db = client.db(dbname);
       await ensureIndexes(state.db);
-      console.log(`MongoDB connected to "${dbname}"`);
+      logger.info(`MongoDB connected to "${dbname}"`);
       done();
     })
-    .catch((err) => done(err));
+    .catch((err) => {
+      logger.error('Failed to connect to MongoDB', err);
+      done(err);
+    });
 };
 
 module.exports.get = function () {

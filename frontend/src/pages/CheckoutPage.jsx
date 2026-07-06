@@ -26,7 +26,14 @@ const CheckoutPage = () => {
         const data = await getOrderSummary();
         if (data.status) {
           setTotal(data.total);
-          // Auto fill user details if available, skipping for now
+          if (data.deliveryDetails) {
+            setFormData(prev => ({
+              ...prev,
+              mobile: data.deliveryDetails.mobile || prev.mobile,
+              address: data.deliveryDetails.address || prev.address,
+              pincode: data.deliveryDetails.pincode || prev.pincode
+            }));
+          }
         }
       } catch (err) {
         toast.error('Failed to load checkout details');
@@ -55,22 +62,24 @@ const CheckoutPage = () => {
         toast.success('Order placed successfully!');
         navigate('/order-success');
       } else {
-        verifyRazorpayPayment(data.order || data.paymentOrder);
+        verifyRazorpayPayment(data.order || data.paymentOrder, data.razorpayKeyId);
       }
     } catch (err) {
-      toast.error('Failed to place order');
+      toast.error(err.response?.data?.message || 'Failed to place order');
       setIsSubmitting(false);
     }
   };
 
-  const verifyRazorpayPayment = (order) => {
+  const verifyRazorpayPayment = (order, keyId) => {
+    console.log('Order object:', order);
+    console.log('Key ID:', keyId);
     if (!window.Razorpay) {
       toast.error('Razorpay SDK failed to load');
       setIsSubmitting(false);
       return;
     }
 
-    const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    const razorpayKey = keyId || import.meta.env.VITE_RAZORPAY_KEY_ID;
     if (!razorpayKey) {
       toast.error('Razorpay key is not configured');
       setIsSubmitting(false);
@@ -86,7 +95,7 @@ const CheckoutPage = () => {
       order_id: order.id,
       handler: async (response) => {
         try {
-          const verifyData = await verifyPayment(response, order);
+          const verifyData = await verifyPayment(response, order, formData);
           if (verifyData.status) {
             await fetchCartCount();
             toast.success('Payment successful!');

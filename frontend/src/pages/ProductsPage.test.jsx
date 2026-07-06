@@ -34,7 +34,7 @@ describe('ProductsPage', () => {
     });
 
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
-    expect(screen.getByText('13 products found')).toBeInTheDocument();
+    expect(screen.getByText('13 products available')).toBeInTheDocument();
     expect(screen.getByText('Page 1 of 2')).toBeInTheDocument();
   });
 
@@ -47,7 +47,7 @@ describe('ProductsPage', () => {
     await user.type(screen.getByRole('searchbox'), 'missing');
 
     await waitFor(() => {
-      expect(screen.getByText('No products found')).toBeInTheDocument();
+      expect(screen.getByText('No products match your criteria')).toBeInTheDocument();
     });
   });
 });

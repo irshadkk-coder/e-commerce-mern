@@ -1,4 +1,5 @@
 const productService = require('../services/productService');
+const categoryService = require('../services/categoryService');
 const asyncHandler = require('../utils/asyncHandler');
 const { success } = require('../utils/response');
 const { notFound } = require('../utils/httpError');
@@ -9,7 +10,7 @@ const listProducts = asyncHandler(async (req, res) => {
 });
 
 const getCategories = asyncHandler(async (req, res) => {
-  const categories = await productService.getCategories();
+  const categories = await categoryService.getCategoryNames();
   return success(res, { categories });
 });
 

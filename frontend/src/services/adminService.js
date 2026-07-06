@@ -5,6 +5,26 @@ export const getAdminProducts = async () => {
   return response.data;
 };
 
+export const getAdminStats = async () => {
+  const response = await api.get('/admin/stats');
+  return response.data;
+};
+
+export const getAdminCategories = async () => {
+  const response = await api.get('/admin/categories');
+  return response.data;
+};
+
+export const addAdminCategory = async (name) => {
+  const response = await api.post('/admin/categories', { name });
+  return response.data;
+};
+
+export const deleteAdminCategory = async (id) => {
+  const response = await api.delete(`/admin/categories/${id}`);
+  return response.data;
+};
+
 export const addAdminProduct = async (formData) => {
   // Use multipart form data for image uploads
   const response = await api.post('/admin/products', formData, {

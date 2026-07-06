@@ -6,7 +6,6 @@ const collections = require('../config/collections');
 const {
   createUser,
   createProduct,
-  createOnlineOrder,
   razorpaySignature
 } = require('./helpers/testData');
 
@@ -74,7 +73,11 @@ describe('cart, checkout, and payment API', () => {
   test('verifies Razorpay payment once and rejects duplicate verification', async () => {
     const { user, token } = await createUser();
     const product = await createProduct();
-    const order = await createOnlineOrder(user._id, product._id);
+    const order = {
+      razorpayOrderId: 'order_test_123',
+      razorpayAmount: 199900,
+      _id: new ObjectId()
+    };
     await db.get().collection(collections.CART_COLLECTION).insertOne({
       user: new ObjectId(user._id),
       products: [{ item: new ObjectId(product._id), quantity: 1 }]
@@ -92,6 +95,11 @@ describe('cart, checkout, and payment API', () => {
         receipt: String(order._id),
         amount: order.razorpayAmount,
         currency: 'INR'
+      },
+      checkout: {
+        mobile: '9999999999',
+        address: '123 Test Street',
+        pincode: '600001'
       }
     };
 
@@ -113,7 +121,15 @@ describe('cart, checkout, and payment API', () => {
   test('rejects invalid payment signatures safely', async () => {
     const { user, token } = await createUser();
     const product = await createProduct();
-    const order = await createOnlineOrder(user._id, product._id);
+    const order = {
+      razorpayOrderId: 'order_test_bad',
+      razorpayAmount: 199900,
+      _id: new ObjectId()
+    };
+    await db.get().collection(collections.CART_COLLECTION).insertOne({
+      user: new ObjectId(user._id),
+      products: [{ item: new ObjectId(product._id), quantity: 1 }]
+    });
 
     const response = await request(app)
       .post('/api/verify-payment')
@@ -129,6 +145,11 @@ describe('cart, checkout, and payment API', () => {
           receipt: String(order._id),
           amount: order.razorpayAmount,
           currency: 'INR'
+        },
+        checkout: {
+          mobile: '9999999999',
+          address: '123 Test Street',
+          pincode: '600001'
         }
       })
       .expect(400);

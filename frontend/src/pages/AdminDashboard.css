@@ -24,6 +24,94 @@
   gap: 1.5rem;
 }
 
+.admin-form-actions,
+.admin-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.admin-form-actions {
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.inline-category-add {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.form-error {
+  margin-top: 0.4rem;
+  color: #ff6b88;
+  font-size: 0.85rem;
+}
+
+.category-management-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.category-list-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.category-row:last-child {
+  border-bottom: none;
+}
+
+.admin-image-preview {
+  display: block;
+  width: 160px;
+  height: 120px;
+  object-fit: cover;
+  margin-top: 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.admin-stat-card {
+  padding: 1.5rem;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-stat-card span {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.admin-stat-card strong {
+  color: var(--text-main);
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
 .btn-success {
   background: var(--success);
   color: #fff;
@@ -95,5 +183,9 @@ td {
   .admin-form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
   }
 }

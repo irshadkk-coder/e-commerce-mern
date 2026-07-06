@@ -4,7 +4,9 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
 import { getProductById } from '../services/productService';
 import { addToCart } from '../services/cartService';
-import { productImageUrl } from '../services/assetUrl';
+import { getProductImage } from '../services/assetUrl';
+import { formatCategory } from '../constants/categories';
+import { DUMMY_PRODUCTS } from '../constants/dummyProducts';
 import './ProductDetailPage.css';
 
 const ProductDetailPage = () => {
@@ -19,6 +21,12 @@ const ProductDetailPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        const localProduct = DUMMY_PRODUCTS.find((item) => item._id === id);
+        if (localProduct) {
+          setProduct(localProduct);
+          return;
+        }
+
         const data = await getProductById(id);
         if (data.status) {
           setProduct(data.product);
@@ -50,9 +58,14 @@ const ProductDetailPage = () => {
 
     try {
       setAdding(true);
-      await addToCart(product._id);
-      await fetchCartCount();
-      toast.success(`${product.name} added to cart!`);
+      if (String(product._id).startsWith('dummy-')) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        toast.success(`${product.name} added to cart!`);
+      } else {
+        await addToCart(product._id);
+        await fetchCartCount();
+        toast.success(`${product.name} added to cart!`);
+      }
     } catch (err) {
       toast.error('Failed to add product to cart');
     } finally {
@@ -79,14 +92,14 @@ const ProductDetailPage = () => {
       <div className="product-detail-layout glass-panel">
         <div className="product-detail-image">
           <img 
-            src={productImageUrl(product._id)}
+            src={getProductImage(product)}
             alt={product.name}
             onError={(e) => { e.target.src = 'https://via.placeholder.com/600x600/14141d/8c8c9a?text=No+Image'; }}
           />
         </div>
 
         <div className="product-detail-info">
-          <div className="badge badge-primary">{product.category}</div>
+          <div className="badge badge-primary">{formatCategory(product.category)}</div>
           <h1 className="detail-title">{product.name}</h1>
           <div className="detail-price">₹{product.price}</div>
           

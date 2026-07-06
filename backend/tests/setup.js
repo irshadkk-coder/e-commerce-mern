@@ -25,7 +25,8 @@ afterEach(async () => {
     database.collection(collections.USER_COLLECTION).deleteMany({}),
     database.collection(collections.PRODUCT_COLLECTION).deleteMany({}),
     database.collection(collections.CART_COLLECTION).deleteMany({}),
-    database.collection(collections.ORDER_COLLECTION).deleteMany({})
+    database.collection(collections.ORDER_COLLECTION).deleteMany({}),
+    database.collection(collections.CATEGORY_COLLECTION).deleteMany({})
   ]);
 });
 

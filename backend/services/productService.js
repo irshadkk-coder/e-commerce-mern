@@ -1,12 +1,14 @@
 const db = require('../config/connection');
 const collections = require('../config/collections');
 const { ObjectId } = require('mongodb');
+const categoryService = require('./categoryService');
 
 const normalizeProductPayload = (product) => ({
   name: product.name,
   description: product.description,
   price: Number(product.price),
-  category: product.category
+  stock: Number(product.stock || 0),
+  category: categoryService.normalizeCategoryName(product.category)
 });
 
 const buildProductFilter = ({ q, category, minPrice, maxPrice } = {}) => {
@@ -104,9 +106,7 @@ const updateProduct = async (productId, productDetails) => {
 };
 
 const getCategories = async () => {
-  return db.get()
-    .collection(collections.PRODUCT_COLLECTION)
-    .distinct('category');
+  return categoryService.getCategoryNames();
 };
 
 const incrementSalesCounts = async (products) => {
