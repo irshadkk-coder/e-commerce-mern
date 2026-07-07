@@ -766,13 +766,15 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    padding-top: var(--space-6);
-    min-height: 65vh;
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+    min-height: auto;
   }
 
   /* Stack layout — image above text on mobile */
   .hero-container {
     text-align: center;
+    gap: var(--space-6);
   }
 
   .hero-content {
@@ -817,14 +819,14 @@
 
   /* Smaller image on mobile */
   .hero-product-showcase {
-    max-width: 280px;
+    max-width: 240px;
     margin: 0 auto;
   }
 
   /* Carousel controls */
   .hero-carousel-controls {
     justify-content: center;
-    margin-top: var(--space-4);
+    margin-top: var(--space-3);
   }
 
   /* Thumbnail strip */
@@ -890,12 +892,41 @@
 }
 
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: 1.75rem;
+  .hero-section {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
   }
 
+  .hero-container {
+    gap: var(--space-4);
+  }
+
+  /* Typography & Titles - Premium App Look */
+  .hero-title {
+    font-size: 1.6rem;
+    line-height: 1.15;
+    margin-bottom: var(--space-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.35;
+    margin-bottom: var(--space-3);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--text-muted);
+  }
+
+  /* Optimize Image Size for First Screen Impact */
   .hero-product-showcase {
-    max-width: 260px;
+    max-width: 200px;
+    margin-bottom: var(--space-1);
   }
 
   .hero-thumb {
@@ -905,5 +936,67 @@
 
   .carousel-dot.active {
     width: 18px;
+  }
+
+  /* Sleeker Badges */
+  .hero-badge-row {
+    margin-bottom: var(--space-2);
+  }
+
+  .hero-product-badge {
+    display: none; /* Simplify mobile view */
+  }
+
+  .hero-badge {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    background: rgba(245, 197, 24, 0.08);
+    border: 1px solid rgba(245, 197, 24, 0.15);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Premium Price Layout - Stacked */
+  .hero-price-row {
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-original-price {
+    font-size: 0.85rem;
+  }
+
+  .hero-price {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .hero-discount-group {
+    margin-top: 4px;
+  }
+
+  /* Enhanced CTA Buttons & Touch Targets */
+  .hero-actions {
+    gap: var(--space-2);
+  }
+
+  .hero-actions .btn {
+    min-height: 52px; /* Apple UI standard touch target */
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+  }
+
+  .hero-actions .btn-primary {
+    box-shadow: 0 4px 20px rgba(245, 197, 24, 0.25);
+  }
+
+  /* Premium Micro-Interactions */
+  .hero-actions .btn:active {
+    transform: scale(0.96);
+  }
+
+  .hero-carousel-controls {
+    margin-top: var(--space-2);
   }
 }
