@@ -15,12 +15,8 @@ const transporter = nodemailer.createTransport({
 logger.info(`Email Service Configured. Emails will be sent from: ${process.env.SMTP_FROM || 'NOT_CONFIGURED'}`);
 
 const sendVerificationEmail = async (email, otp) => {
-
-  const mailOptions = {
-    from: `"NeoShop" <${process.env.SMTP_FROM}>`,
-    to: email,
-    subject: 'Your NeoShop Verification Code',
-    html: `
+  const subject = 'Your NeoShop Verification Code';
+  const htmlContent = `
       <!DOCTYPE html>
       <html>
       <head>
@@ -58,27 +54,55 @@ const sendVerificationEmail = async (email, otp) => {
         </div>
       </body>
       </html>
-    `
-  };
+    `;
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    logger.info('Verification email sent:', info.messageId);
-    return info;
-  } catch (error) {
-    logger.error('Error sending verification email:', error);
-    throw error;
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': process.env.BREVO_API_KEY,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'NeoShop', email: process.env.SMTP_FROM },
+          to: [{ email: email }],
+          subject: subject,
+          htmlContent: htmlContent
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(JSON.stringify(errData));
+      }
+      logger.info('Verification email sent via Brevo HTTP API');
+      return await response.json();
+    } catch (error) {
+      logger.error('Error sending verification email via API:', error);
+      throw error;
+    }
+  } else {
+    try {
+      const info = await transporter.sendMail({
+        from: `"NeoShop" <${process.env.SMTP_FROM}>`,
+        to: email,
+        subject: subject,
+        html: htmlContent
+      });
+      logger.info('Verification email sent via SMTP:', info.messageId);
+      return info;
+    } catch (error) {
+      logger.error('Error sending verification email via SMTP:', error);
+      throw error;
+    }
   }
 };
 
 const sendPasswordResetEmail = async (email, token) => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-
-  const mailOptions = {
-    from: `"NeoShop Support" <${process.env.SMTP_FROM}>`,
-    to: email,
-    subject: 'Password Reset Request',
-    html: `
+  const subject = 'Password Reset Request';
+  const htmlContent = `
       <!DOCTYPE html>
       <html>
       <head>
@@ -110,16 +134,48 @@ const sendPasswordResetEmail = async (email, token) => {
         </div>
       </body>
       </html>
-    `
-  };
+    `;
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    logger.info('Password reset email sent:', info.messageId);
-    return info;
-  } catch (error) {
-    logger.error('Error sending password reset email:', error);
-    throw error;
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': process.env.BREVO_API_KEY,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'NeoShop Support', email: process.env.SMTP_FROM },
+          to: [{ email: email }],
+          subject: subject,
+          htmlContent: htmlContent
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(JSON.stringify(errData));
+      }
+      logger.info('Password reset email sent via Brevo HTTP API');
+      return await response.json();
+    } catch (error) {
+      logger.error('Error sending password reset email via API:', error);
+      throw error;
+    }
+  } else {
+    try {
+      const info = await transporter.sendMail({
+        from: `"NeoShop Support" <${process.env.SMTP_FROM}>`,
+        to: email,
+        subject: subject,
+        html: htmlContent
+      });
+      logger.info('Password reset email sent via SMTP:', info.messageId);
+      return info;
+    } catch (error) {
+      logger.error('Error sending password reset email via SMTP:', error);
+      throw error;
+    }
   }
 };
 
