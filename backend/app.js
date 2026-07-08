@@ -18,6 +18,8 @@ validateEnv();
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(helmetMiddleware);
 app.use(cors(corsOptions));
 app.use(generalLimiter);

@@ -58,7 +58,7 @@ const signUp = async (userData) => {
       );
       
       const user = { ...existingUser, ...updatedData };
-      emailService.sendVerificationEmail(user.email, otp);
+      await emailService.sendVerificationEmail(user.email, otp);
 
       return { 
         status: true, 
@@ -89,7 +89,7 @@ const signUp = async (userData) => {
   const user = { ...signupData, _id: result.insertedId };
 
   // Send verification email
-  emailService.sendVerificationEmail(user.email, otp);
+  await emailService.sendVerificationEmail(user.email, otp);
 
   return { status: true, user: sanitizeUser(user) };
 };
@@ -120,7 +120,7 @@ const login = async (credentials) => {
         { $set: { otp: hashedOtp, otpExpiry, otpAttempts: 0, updatedAt: new Date() } }
       );
       
-      emailService.sendVerificationEmail(user.email, otp);
+      await emailService.sendVerificationEmail(user.email, otp);
     }
     return { status: false, requireVerification: true, message };
   }
@@ -534,7 +534,7 @@ const verifyEmail = async (email, otp) => {
         { $set: { otp: newHashedOtp, otpExpiry, otpAttempts: 0, updatedAt: new Date() } }
       );
       
-      emailService.sendVerificationEmail(user.email, newOtp);
+      await emailService.sendVerificationEmail(user.email, newOtp);
       throw badRequest('Too many incorrect attempts. A new verification code has been sent.');
     } else {
       await db.get().collection(collections.USER_COLLECTION).updateOne(
@@ -580,7 +580,7 @@ const resendVerification = async (email) => {
     { $set: { otp: hashedOtp, otpExpiry, otpAttempts: 0, updatedAt: new Date() } }
   );
 
-  emailService.sendVerificationEmail(email, otp);
+  await emailService.sendVerificationEmail(email, otp);
   return { status: true, message: 'If the email is registered and unverified, a new OTP has been sent.' };
 };
 
