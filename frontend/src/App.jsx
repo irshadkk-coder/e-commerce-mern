@@ -1,6 +1,7 @@
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -25,6 +26,14 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import Footer from './components/Footer';
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    // Wait for Framer Motion's exit transition (220ms) before scrolling up
+    const timeoutId = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 250);
+    return () => clearTimeout(timeoutId);
+  }, [location.pathname]);
 
   return (
     <div className="app-shell">

@@ -102,11 +102,15 @@ input, textarea, select {
   font-family: inherit;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 /* Base Layouts */
 .app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 .page-container {
@@ -119,10 +123,14 @@ input, textarea, select {
 .main-content {
   flex: 1;
   padding-top: 72px;
+  display: flex;
+  flex-direction: column;
 }
 
 .route-transition {
-  min-height: calc(100vh - 72px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Premium Buttons */
