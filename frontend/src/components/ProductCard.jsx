@@ -1,10 +1,8 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, ShoppingCart, Heart, Eye } from 'lucide-react';
+import { Star, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
-import { addToCart } from '../services/cartService';
 import { toggleWishlist } from '../services/wishlistService';
 import { getProductImage } from '../services/assetUrl';
 import { formatCategory } from '../constants/categories';
@@ -29,9 +27,7 @@ const ProductCard = ({ product, skeleton = false, onWishlistUpdate }) => {
   }
 
   // ─── Normal card ──────────────────────────────────────────────────────────
-  const { user, fetchCartCount, wishlistIds, fetchWishlist } = useAuth();
-  const navigate = useNavigate();
-  const [adding, setAdding] = useState(false);
+  const { user, wishlistIds, fetchWishlist } = useAuth();
   
   const isWishlisted = wishlistIds?.includes(product?._id) || false;
 
@@ -41,33 +37,6 @@ const ProductCard = ({ product, skeleton = false, onWishlistUpdate }) => {
   const discountPercentage = product.discount || 15;
   const currentPrice = Number(product.price || 0);
   const originalPrice = product.originalPrice || Math.round(currentPrice / (1 - discountPercentage / 100));
-
-  const handleAddToCart = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!user) {
-      toast('Please login to add to cart', { icon: '🔒' });
-      navigate('/login');
-      return;
-    }
-
-    if (user.role === 'admin') {
-      toast.error('Admins cannot purchase items');
-      return;
-    }
-
-    try {
-      setAdding(true);
-      await addToCart(product._id);
-      await fetchCartCount();
-      toast.success(`${product.name} added to cart!`);
-    } catch (err) {
-      toast.error('Failed to add product to cart');
-    } finally {
-      setAdding(false);
-    }
-  };
 
   const handleWishlist = async (e) => {
     e.preventDefault();
@@ -121,20 +90,7 @@ const ProductCard = ({ product, skeleton = false, onWishlistUpdate }) => {
             loading="lazy"
             onError={(e) => { e.target.src = 'https://via.placeholder.com/400x400/111111/666666?text=No+Image'; }}
           />
-          <div className="product-overlay">
-            <span className="quick-view-chip">
-              <Eye size={15} />
-              Quick View
-            </span>
-            <button
-              className="btn btn-primary add-to-cart-btn"
-              onClick={handleAddToCart}
-              disabled={adding}
-            >
-              <ShoppingCart size={16} />
-              {adding ? 'Adding...' : 'Add to Cart'}
-            </button>
-          </div>
+
         </div>
 
         <div className="product-info">
